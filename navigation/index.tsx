@@ -14,12 +14,12 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { StyleSheet } from 'react-native';
+import { EventsStackParamList, ProfileStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import EventsScreen from '../screens/EventsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import EventDetailsScreen from '../screens/EventDetailsScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -49,6 +49,41 @@ function RootNavigator() {
   );
 }
 
+const EventsStack = createNativeStackNavigator<EventsStackParamList>();
+
+function EventsNavigator() {
+  return (
+    <EventsStack.Navigator
+    initialRouteName="Events"
+    screenOptions={{
+      headerShown: true,
+      headerBackTitleVisible: false,
+    }}
+    >
+      <EventsStack.Screen name='Events' component={EventsScreen} options={{ title: 'Events'}}/>
+      <EventsStack.Screen name='EventDetails' component={EventDetailsScreen} options={{ title: 'Event Details'}}/>
+    </EventsStack.Navigator>
+  );
+  
+}
+
+const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
+
+function ProfileNavigator() {
+  return (
+    <ProfileStack.Navigator
+    initialRouteName="Profile"
+    screenOptions={{
+      headerShown: true,
+      headerBackTitleVisible: false
+    }}
+    >
+      <ProfileStack.Screen name='Profile' component={ProfileScreen} options={{ title: 'Profile'}}/>
+    </ProfileStack.Navigator>
+  );
+  
+}
+
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
@@ -60,20 +95,22 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Events"
+      initialRouteName="EventsNavigator"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarShowLabel: false,
+        headerShown: false
       }}>
       <BottomTab.Screen
-        name="Events"
-        component={EventsScreen}
+        name="EventsNavigator"
+        component={EventsNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color}/>
         }}
       />
       <BottomTab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="ProfileNavigator"
+        component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color}/>
         }}
@@ -119,5 +156,5 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={30} style={{ marginBottom: -3, }} {...props} />;
 }

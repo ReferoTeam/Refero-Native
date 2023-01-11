@@ -1,32 +1,44 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { ScrollView } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import { useEffect, useState } from 'react';
+import Event from '../components/Event';
+import { ActivityIndicator } from 'react-native-paper';
 
 export default function EventsScreen() {
   const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] =  useState(true);
+  const [refreshing, setRefreshing] = useState(true);
 
-  const getEvents = async () => {
-    const res = await fetch('http://localhost:8000/events');
-    const data = await res.json();
-    setData(data);
-    setLoading(false);
+  const fetchEvents = async () => {
+    
+    const res: Response = await fetch('http://localhost:8000/events');
+    const newData = await res.json();
+    setData(newData);
+    setRefreshing(false);
+    // fetch('http://localhost:8000/events')
+    //   .then((res: Response) => res.json())
+    //   .then((resJson) => {
+    //     setRefreshing(false);
+    //     var newData = data.concat(resJson.results);
+    //     setData(newData);
+    //   })
+    //   .catch((error) => console.error(error));
   }
 
   useEffect(() => {
-    getEvents();
+    fetchEvents();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Events Screen</Text>
+      {refreshing ? <ActivityIndicator/> : null}
       <FlatList
         data={data}
-        renderItem={({item}) => <Text style={styles.item}>{item.eventname}</Text>}
+        refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={fetchEvents} /> }
+        renderItem={({item}) => <Event eventname={item.eventname} location={item.location} description={item.description}></Event>}
       />
     </View>
   );
@@ -37,7 +49,6 @@ export default function EventsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   title: {

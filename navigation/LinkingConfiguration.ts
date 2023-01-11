@@ -15,17 +15,18 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          EventsNavigator: {
             screens: {
-              TabOneScreen: 'one',
-            },
+              Events: 'evemts',
+              EventDetails: 'event-details'
+            }
           },
-          TabTwo: {
+          ProfileNavigator: {
             screens: {
-              TabTwoScreen: 'two',
-            },
-          },
-        },
+              Profile: 'profile'
+            }
+          }
+        }
       },
       Modal: 'modal',
       NotFound: '*',

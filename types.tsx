@@ -25,11 +25,18 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 >;
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  Events: undefined;
-  Profile: undefined;
+  EventsNavigator: NavigatorScreenParams<EventsStackParamList> | undefined;
+  ProfileNavigator: NavigatorScreenParams<ProfileStackParamList> | undefined;
 };
+
+export type EventsStackParamList = {
+  Events: undefined;
+  EventDetails: undefined;
+}
+
+export type ProfileStackParamList = {
+  Profile: undefined;
+}
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,

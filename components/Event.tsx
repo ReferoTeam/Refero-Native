@@ -1,45 +1,58 @@
 import * as WebBrowser from 'expo-web-browser';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-
-import Colors from '../constants/Colors';
-import { MonoText } from './StyledText';
+import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from './Themed';
+import { useNavigation } from '@react-navigation/native';
+import { Card, Title, Paragraph, Button } from 'react-native-paper'
 
-export default function Event() {
+export default function Event(props: {eventname: String, location: String, description: String}) {
+  const navigation = useNavigation();
 
   return (
-    <View style={styles.getStartedContainer}>
-      
-    </View>
+    <Pressable onPress={() => {
+      navigation.navigate('Root', {
+        screen: 'EventsNavigator', params: {
+          screen: 'EventDetails'
+        }
+      });
+    }}>
+      <Card mode='elevated' style={styles.container}>
+        <Card.Title title={props.eventname} titleStyle={styles.title} subtitle={props.location} subtitleStyle={styles.subtitle}/>
+        <Card.Content>
+          <Paragraph>{props.description}</Paragraph>
+        </Card.Content>
+        <Card.Actions style={styles.button}>
+          <Button icon='calendar' textColor='black' onPress={() => {
+
+          }}>
+            Join
+          </Button>
+        </Card.Actions>
+      </Card>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightContainer: {
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
+  text: {
     fontSize: 17,
     lineHeight: 24,
     textAlign: 'center',
   },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: 'center',
+  container: {
+    marginTop: 10,
+    marginHorizontal: 5,
+    alignItems: 'stretch',
+    backgroundColor: 'white'
   },
-  helpLink: {
-    paddingVertical: 15,
+  button: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    color: 'white'
   },
-  helpLinkText: {
-    textAlign: 'center',
+  title: {
+    fontWeight: 'bold'
   },
+  subtitle: {
+    fontWeight: '200',
+  }
 });
