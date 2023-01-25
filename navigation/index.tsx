@@ -15,11 +15,12 @@ import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { StyleSheet } from 'react-native';
-import { EventsStackParamList, ProfileStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { EventsStackParamList, ProfileStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps, YourEventsStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import EventsScreen from '../screens/EventsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EventDetailsScreen from '../screens/EventDetailsScreen';
+import YourEventsScreen from '../screens/YourEventsScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -36,7 +37,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
 function RootNavigator() {
   return (
     <Stack.Navigator>
@@ -50,7 +50,6 @@ function RootNavigator() {
 }
 
 const EventsStack = createNativeStackNavigator<EventsStackParamList>();
-
 function EventsNavigator() {
   return (
     <EventsStack.Navigator
@@ -58,24 +57,58 @@ function EventsNavigator() {
     screenOptions={{
       headerShown: true,
       headerBackTitleVisible: false,
+      headerStyle: {
+        backgroundColor: "#003568",
+      },
+      headerTitleStyle: {
+        color: 'white'
+      }
     }}
+    
     >
       <EventsStack.Screen name='Events' component={EventsScreen} options={{ title: 'Events'}}/>
       <EventsStack.Screen name='EventDetails' component={EventDetailsScreen} options={{ title: 'Event Details'}}/>
     </EventsStack.Navigator>
   );
-  
+}
+
+const YourEventsStack = createNativeStackNavigator<YourEventsStackParamList>();
+function YourEventsNavigator() {
+  return (
+    <YourEventsStack.Navigator
+    initialRouteName="YourEvents"
+    screenOptions={{
+      headerShown: true,
+      headerBackTitleVisible: false,
+      headerStyle: {
+        backgroundColor: "#003568",
+      },
+      headerTitleStyle: {
+        color: 'white'
+      }
+    }}
+    
+    >
+      <YourEventsStack.Screen name='YourEvents' component={YourEventsScreen} options={{ title: 'Your Events'}}/>
+      <YourEventsStack.Screen name='EventDetails' component={EventDetailsScreen} options={{ title: 'Event Details'}}/>
+    </YourEventsStack.Navigator>
+  );
 }
 
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
-
 function ProfileNavigator() {
   return (
     <ProfileStack.Navigator
     initialRouteName="Profile"
     screenOptions={{
       headerShown: true,
-      headerBackTitleVisible: false
+      headerBackTitleVisible: false,
+      headerStyle: {
+        backgroundColor: "#003568",
+      },
+      headerTitleStyle: {
+        color: 'white'
+      }
     }}
     >
       <ProfileStack.Screen name='Profile' component={ProfileScreen} options={{ title: 'Profile'}}/>
@@ -102,12 +135,20 @@ function BottomTabNavigator() {
         headerShown: false
       }}>
       <BottomTab.Screen
+        name="YourEventsNavigator"
+        component={YourEventsNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="calendar-check-o" color={color}/>
+        }}
+      />
+      <BottomTab.Screen
         name="EventsNavigator"
         component={EventsNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color}/>
         }}
       />
+      
       <BottomTab.Screen
         name="ProfileNavigator"
         component={ProfileNavigator}
@@ -115,36 +156,6 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color}/>
         }}
       />
-      {/* <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      /> */}
     </BottomTab.Navigator>
   );
 }

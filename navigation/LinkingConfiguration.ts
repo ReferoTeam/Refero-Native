@@ -17,7 +17,13 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           EventsNavigator: {
             screens: {
-              Events: 'evemts',
+              Events: 'events',
+              EventDetails: 'event-details'
+            }
+          },
+          YourEventsNavigator: {
+            screens: {
+              YourEvents: 'your-events',
               EventDetails: 'event-details'
             }
           },

@@ -1,5 +1,4 @@
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
-
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { ScrollView } from 'react-native';
@@ -13,8 +12,8 @@ export default function EventsScreen() {
   const [events, setEvents] = useState<EventType[]>([]);
   const [refreshing, setRefreshing] = useState(true);
 
-  function fetchEvents() {
-    fetch('http://localhost:8000/events/notAttending/cole.carlson@stthomas.edu')
+  const fetchEvents = async () => {
+    fetch('http://localhost:8000/events/attending/cole.carlson@stthomas.edu')
     .then((res: Response) => res.json())
     .then((events: any) => {
       setEvents(events);

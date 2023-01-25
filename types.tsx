@@ -26,12 +26,18 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 
 export type RootTabParamList = {
   EventsNavigator: NavigatorScreenParams<EventsStackParamList> | undefined;
+  YourEventsNavigator: NavigatorScreenParams<EventsStackParamList> | undefined;
   ProfileNavigator: NavigatorScreenParams<ProfileStackParamList> | undefined;
 };
 
 export type EventsStackParamList = {
   Events: undefined;
   EventDetails: undefined;
+}
+
+export type YourEventsStackParamList = {
+    YourEvents: undefined;
+    EventDetails: undefined;
 }
 
 export type ProfileStackParamList = {
@@ -42,3 +48,24 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   BottomTabScreenProps<RootTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;
+
+export type User = {
+  _id: String,
+  firstName: String,
+  lastName: String,
+  email: String,
+  description: String,
+  interests: [String],
+}
+
+export type Event = {
+  _id: String,
+  eventname: String,
+  description: String,
+  location: String,
+  datetime: Date,
+  duration: Number,
+  userEmail: String,
+  eventInterests: String[],
+  attendingUsers: String[]
+}
